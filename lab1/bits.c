@@ -111,6 +111,15 @@ NOTES:
 
 
 #endif
+
+void printBinary(int n) {
+    int i;
+    for (i = 31; i >= 0; i--) {
+        printf("%u", n >> i & 1);
+    }
+    printf("\n");
+}
+
 // Rating: 1
 /* 
  * bitAnd - x&y using only ~ and | 
@@ -120,7 +129,7 @@ NOTES:
  *   Rating: 1
  */
 int bitAnd(int x, int y) {
-  return 2;
+  return ~(~x | ~y);
 }
 /* 
  * bitXor - x^y using only ~ and & 
@@ -130,7 +139,7 @@ int bitAnd(int x, int y) {
  *   Rating: 1
  */
 int bitXor(int x, int y) {
-  return 2;
+  return ~(x & y) & ~(~x & ~y);
 }
 /* 
  * thirdBits - return word with every third bit (starting from the LSB) set to 1
@@ -140,8 +149,11 @@ int bitXor(int x, int y) {
  *   Rating: 1
  */
 int thirdBits(void) {
-  return 2;
+  int a = 73;
+  a = a << 9 | a;
+  return a << 18 | a;
 }
+
 // Rating: 2
 /* 
  * fitsBits - return 1 if x can be represented as an 
@@ -153,8 +165,10 @@ int thirdBits(void) {
  *   Rating: 2
  */
 int fitsBits(int x, int n) {
-  return 2;
+  x = x >> (n + ~0);
+  return (!(~x)) | (!x);
 }
+
 /* 
  * sign - return 1 if positive, 0 if zero, and -1 if negative
  *  Examples: sign(130) = 1
@@ -164,7 +178,7 @@ int fitsBits(int x, int n) {
  *  Rating: 2
  */
 int sign(int x) {
-  return 2;
+  return (x >> 31) | !!x;
 }
 /* 
  * getByte - Extract byte n from word x
@@ -175,7 +189,10 @@ int sign(int x) {
  *   Rating: 2
  */
 int getByte(int x, int n) {
-  return 2;
+  n = n + n;
+  n = n + n;
+  n = n + n;
+  return (x >> n) & 0xFF;
 }
 // Rating: 3
 /* 
@@ -187,7 +204,8 @@ int getByte(int x, int n) {
  *   Rating: 3 
  */
 int logicalShift(int x, int n) {
-  return 2;
+  
+  return x >> n;
 }
 /* 
  * addOK - Determine if can compute x+y without overflow

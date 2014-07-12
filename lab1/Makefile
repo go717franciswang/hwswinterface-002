@@ -5,6 +5,12 @@ CC = gcc
 CFLAGS = -O -Wall -m64 -g
 LIBS = -lm
 
+.PHONY: test
+
+test: all
+	./dlc -e bits.c
+	./btest
+
 all: btest fshow ishow ptest
 
 btest: btest.c bits.c decl.c tests.c btest.h bits.h
