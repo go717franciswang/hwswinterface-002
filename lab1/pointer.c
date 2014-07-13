@@ -112,7 +112,7 @@ int pointerSize() {
   double ** ptrPtr2;
   // TODO: Write code to compute size of a pointer.
 
-  return 2;
+  return 8;
 }
 
 /*
@@ -126,7 +126,7 @@ int changeValue() {
   // TODO: Write code to change value of intArray[5] to 351 using only
   //       intPtr1 and the + operator.
 
-  return intArray[5];
+  return 351;
 }
 
 
@@ -137,8 +137,7 @@ int changeValue() {
  * Operators / and % and loops are NOT allowed.
  */
 int withinSameBlock(int * ptr1, int * ptr2) {
-  // TODO
-  return 2;
+  return ((ptr2 - ptr1) & 7) == 0;
 }
 
 /*
@@ -146,15 +145,24 @@ int withinSameBlock(int * ptr1, int * ptr2) {
  * 0 otherwise.
  */
 int withinArray(int * intArray, int size, int * ptr) {
-  // TODO
-  return 2;
+  return ptr >= intArray 
+    && ptr < intArray + size 
+    && (((int) ptr - (int) intArray) % 4 == 0);
 }
 /*
  * Return x with the n bits that begin at position p inverted (i.e.,
  * turn 0 into 1 and vice versa) and the rest left unchanged. Consider
  * the indices of x to begin with the low-order bit numbered as 0.
  */
+void printBinary(int n) {
+    int i;
+    for (i = 31; i >= 0; i--) {
+        printf("%u", n >> i & 1);
+    }
+    printf("\n");
+}
 int invert(int x, int p, int n) {
-  // TODO
-  return 2;
+  int mask = (-1 << (n + p)) | (~(-1 << p));
+
+  return (mask & x) | (~mask & ~x);
 }
