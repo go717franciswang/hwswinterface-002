@@ -112,6 +112,7 @@ NOTES:
 
 #endif
 
+/*
 void printBinary(int n) {
     int i;
     for (i = 31; i >= 0; i--) {
@@ -119,6 +120,7 @@ void printBinary(int n) {
     }
     printf("\n");
 }
+*/
 
 // Rating: 1
 /* 
@@ -204,8 +206,9 @@ int getByte(int x, int n) {
  *   Rating: 3 
  */
 int logicalShift(int x, int n) {
-  
-  return x >> n;
+  return 
+    (((!!n << 31) >> 31) & (x >> n) & ~(~0 << (33 + ~n))) + 
+    (((!n << 31) >> 31) & x);
 }
 /* 
  * addOK - Determine if can compute x+y without overflow
@@ -216,7 +219,10 @@ int logicalShift(int x, int n) {
  *   Rating: 3
  */
 int addOK(int x, int y) {
-  return 2;
+  int sameSign = !(((x ^ y) >> 31) & 1);
+  int sum = x + y;
+  int sumDifferentSign = ((sum ^ x) >> 31) & 1;
+  return !(sameSign & sumDifferentSign);
 }
 // Rating: 4
 /* 
@@ -227,7 +233,7 @@ int addOK(int x, int y) {
  *   Rating: 4 
  */
 int bang(int x) {
-  return 2;
+  return ~((x >> 31) | ((~x + 1) >> 31)) & 1;
 }
 // Extra Credit: Rating: 3
 /* 
@@ -238,7 +244,7 @@ int bang(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
-  return 2;
+  return (((!!x << 31) >> 31) & y) + (((!x << 31) >> 31) & z);
 }
 // Extra Credit: Rating: 4
 /*
@@ -250,5 +256,7 @@ int conditional(int x, int y, int z) {
  *   Rating: 4
  */
 int isPower2(int x) {
-  return 2;
+  //printf("%i\n", x);
+  //printBinary(!(x >> 31) & (!(x & (x - 1))));
+  return ((!!x << 31) >> 31) & (!(x >> 31) & (!(x & (x + ~0))));
 }
