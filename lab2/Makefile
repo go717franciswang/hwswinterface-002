@@ -8,5 +8,9 @@ check-defuser.txt: bomb.out
 	@grep -q "So you got that one.  Try this one." bomb.out || (echo "Phase 4 was not defused!" ; false)
 	@grep -q "Congratulations! You've (mostly) defused the bomb!" bomb.out || (echo "Phase 5 was not defused!" ; false)
 
-.PHONY: check-defuser.txt
+.PHONY: check-defuser.txt 
 .SUFFIXES:
+
+test.out: test.c
+	gcc -O1 -o test.out test.c
+
