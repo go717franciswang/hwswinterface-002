@@ -11,6 +11,8 @@ check-defuser.txt: bomb.out
 .PHONY: check-defuser.txt 
 .SUFFIXES:
 
-test.out: test.c
-	gcc -O1 -o test.out test.c
+func4.out: func4.c
+	gcc -O1 -o func4.out func4.c
 
+phase_6.out: phase_6.c
+	gcc -O1 -o phase_6.out phase_6.c
