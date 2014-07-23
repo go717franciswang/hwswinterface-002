@@ -46,11 +46,11 @@ int grade = 0;
 int success = 0;
 
 /**************************************************************************
-The following is the part of the code students will actually look at.
-They are put at the beginning of the file to make them easier to find
-in the diassembly, and to make their locations more stable when other
-parts of the code get modified.
-**************************************************************************/
+  The following is the part of the code students will actually look at.
+  They are put at the beginning of the file to make them easier to find
+  in the diassembly, and to make their locations more stable when other
+  parts of the code get modified.
+ **************************************************************************/
 
 /* Forward pointers */
 void entry_check(int);
@@ -73,10 +73,10 @@ void fizz(int arg1, char arg2, long arg3, char* arg4, short arg5, short arg6, un
 {
   entry_check(1);  /* Make sure entered this function properly */
   if (val == cookie) {
-	printf("Fizz!: You called fizz(0x%llx)\n", val);
-	validate(1);
+    printf("Fizz!: You called fizz(0x%llx)\n", val);
+    validate(1);
   } else {
-	printf("Misfire: You called fizz(0x%llx)\n", val);
+    printf("Misfire: You called fizz(0x%llx)\n", val);
   }
   exit(0);
 }
@@ -89,10 +89,10 @@ void bang(unsigned long long val)
 {
   entry_check(2);  /* Make sure entered this function properly */
   if (global_value == cookie) {
-	printf("Bang!: You set global_value to 0x%llx\n", global_value);
-	validate(2);
+    printf("Bang!: You set global_value to 0x%llx\n", global_value);
+    validate(2);
   } else {
-	printf("Misfire: global_value = 0x%llx\n", global_value);
+    printf("Misfire: global_value = 0x%llx\n", global_value);
   }
   exit(0);
 }
@@ -107,22 +107,22 @@ void test()
   entry_check(3);  /* Make sure entered this function properly */
   val = getbuf();
   if (val <= 40) {
-	variable_length = alloca(val);
+    variable_length = alloca(val);
   }
   entry_check(3);
   /* Check for corrupted stack */
   if (local != 0xdeadbeef) {
-	printf("Sabotaged!: the stack has been corrupted\n");
+    printf("Sabotaged!: the stack has been corrupted\n");
   }
   else if (val == cookie) {
-	printf("Boom!: getbuf returned 0x%llx\n", val);
-	if (local != 0xdeadbeef) {
-	  printf("Sabotaged!: the stack has been corrupted\n");
-	}
-	validate(3);
+    printf("Boom!: getbuf returned 0x%llx\n", val);
+    if (local != 0xdeadbeef) {
+      printf("Sabotaged!: the stack has been corrupted\n");
+    }
+    validate(3);
   }
   else {
-	printf("Dud: getbuf returned 0x%llx\n", val);
+    printf("Dud: getbuf returned 0x%llx\n", val);
   }
 }
 /* $end boom-c */
@@ -135,9 +135,8 @@ unsigned long long getbuf()
   int i;
   unsigned long long val = (unsigned long long)Gets(buf);
   variable_length = alloca((val % 40) < 36 ? 36 : val % 40);
-  for(i = 0; i < 36; i++)
-  {
-	variable_length[i] = buf[i];
+  for(i = 0; i < 36; i++) {
+    variable_length[i] = buf[i];
   }
   return val % 40;
 }
@@ -176,21 +175,21 @@ unsigned long long getbuf()
    accept format where characters are typed as pairs of hex digits.
    Nondigit characters are ignored.  Stops when encounters newline.
    In addition, it stores the string in global buffer gets_buf
-*/
+   */
 #define GETLEN 1024
 static char gets_buf[3*GETLEN+1];
 int gets_cnt = 0;
 
 static char trans_char[16] = 
-  {'0', '1', '2', '3', '4', '5', '6', '7', 
-   '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+{'0', '1', '2', '3', '4', '5', '6', '7', 
+  '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
 static void save_char(char c) {
   if (gets_cnt < GETLEN) {
-	gets_buf[3*gets_cnt] = trans_char[(c>>4)&0xF];
-	gets_buf[3*gets_cnt+1] = trans_char[c&0xF];
-	gets_buf[3*gets_cnt+2] = ' ';
-	gets_cnt++;
+    gets_buf[3*gets_cnt] = trans_char[(c>>4)&0xF];
+    gets_buf[3*gets_cnt+1] = trans_char[c&0xF];
+    gets_buf[3*gets_cnt+2] = ' ';
+    gets_cnt++;
   }
 }
 
@@ -208,31 +207,31 @@ char *Gets(char *dest)
 
   gets_cnt = 0;
   if (!hexformat) {
-	while ((c = getc(infile)) != EOF && c != '\n') {
-	  *sp++ = c;
-	  save_char(c);
-	}
+    while ((c = getc(infile)) != EOF && c != '\n') {
+      *sp++ = c;
+      save_char(c);
+    }
   } else {
-	while ((hc = getc(infile)) != EOF && hc != '\n') {
-	  if (isxdigit(hc)) {
-		int val;
-		if ('0' <= hc && hc <= '9')
-		  val = hc - '0';
-		else if ('A' <= hc && hc <= 'F')
-		  val = hc - 'A' + 10;
-		else
-		  val = hc - 'a' + 10;
-		if (even) {
-		  otherd = val;
-		  even = 0;
-		} else {
-		  c = otherd * 16 + val;
-		  *sp++ = c;
-		  save_char(c);
-		  even = 1;
-		}
-	  }
-	}
+    while ((hc = getc(infile)) != EOF && hc != '\n') {
+      if (isxdigit(hc)) {
+        int val;
+        if ('0' <= hc && hc <= '9')
+          val = hc - '0';
+        else if ('A' <= hc && hc <= 'F')
+          val = hc - 'A' + 10;
+        else
+          val = hc - 'a' + 10;
+        if (even) {
+          otherd = val;
+          even = 0;
+        } else {
+          c = otherd * 16 + val;
+          *sp++ = c;
+          save_char(c);
+          even = 1;
+        }
+      }
+    }
   }
   *sp++ = '\0';
   save_term();
@@ -241,7 +240,7 @@ char *Gets(char *dest)
 
 /* Track successful results */
 static int level_counts[5] = 
-  {NORMAL_CNT, NORMAL_CNT, NORMAL_CNT, NORMAL_CNT, KABOOM_CNT};
+{NORMAL_CNT, NORMAL_CNT, NORMAL_CNT, NORMAL_CNT, KABOOM_CNT};
 
 int check_level = -1;
 /* Simple check to make sure validation only happens after proper
@@ -254,23 +253,23 @@ void entry_check(int level)
 void validate(int level)
 {
   if (!team) {
-	printf("No username indicated.  Results not validated\n");
-	return;
+    printf("No username indicated.  Results not validated\n");
+    return;
   }
   if (level < 0 || level >= 5) {
-	printf("Invalid level.  Results not validated\n");
-	return;
+    printf("Invalid level.  Results not validated\n");
+    return;
   }
   if (level != check_level) {
-	printf("Improper call to validate function.  Results not validated\n");
-	return;
+    printf("Improper call to validate function.  Results not validated\n");
+    return;
   }
 
   success = 1;
   if (--level_counts[level] > 0) {
-	printf("Keep going\n");
+    printf("Keep going\n");
   } else if (grade) {
-	printf("Level %d VALID\n", level);
+    printf("Level %d VALID\n", level);
   }
 }
 
@@ -322,44 +321,44 @@ static void launch(int nitro, int offset) {
   int stable_tweak = 0;
   int *space;
   /*
-	This little hack adjusts the stack.  For normal mode, it
-	tries to put it into a stable position from one run to the next.
-	In nitro mode, it makes it even less stable than it would normally be.
-	You don't need to understand it to do the assignment.
-  */
+     This little hack adjusts the stack.  For normal mode, it
+     tries to put it into a stable position from one run to the next.
+     In nitro mode, it makes it even less stable than it would normally be.
+     You don't need to understand it to do the assignment.
+     */
   stable_tweak = (((int) localbuf) & 0x3FF8) + offset; 
   space = (int *) alloca(stable_tweak);
   /* Fill full of halt instructions, so that will get seg fault */
   memset(space, HALT_INSTR, stable_tweak);
 
   if (!quiet) {
-	if (hexformat)
-	  printf("Type Hex string: ");
-	else {
-	  printf("Type string: ");
-	}
+    if (hexformat)
+      printf("Type Hex string: ");
+    else {
+      printf("Type string: ");
+    }
   }
 
   test();
   if (!success) {
-	printf("Better luck next time\n");
-	success = 0;
+    printf("Better luck next time\n");
+    success = 0;
   }
 }
 
 void test_function() {
   // printf("This is a test\n");
-   }
+}
 
 void shift_stack_and_invoke_function(
-       uint64_t new_rsp,
-       void (*func_ptr)()) {
-   uint64_t old_rsp;
+    uint64_t new_rsp,
+    void (*func_ptr)()) {
+  uint64_t old_rsp;
 
-   __asm__ volatile("movq %%rsp, %0\n" : "=a" (old_rsp));
-   __asm__ volatile("movq %0, %%rsp\n" : : "q" (new_rsp) : "memory", "rsp");
-   func_ptr();
-   __asm__ volatile("movq %0, %%rsp\n" : : "q" (old_rsp) : "memory", "rsp");
+  __asm__ volatile("movq %%rsp, %0\n" : "=a" (old_rsp));
+  __asm__ volatile("movq %0, %%rsp\n" : : "q" (new_rsp) : "memory", "rsp");
+  func_ptr();
+  __asm__ volatile("movq %0, %%rsp\n" : : "q" (old_rsp) : "memory", "rsp");
 }
 
 int main(int argc, char *argv[])
@@ -374,14 +373,14 @@ int main(int argc, char *argv[])
   char *m = memalign(NEW_STACK_SIZE, NEW_STACK_SIZE);
   uint64_t    new_rsp;
   if(mprotect(m, NEW_STACK_SIZE, PROT_READ|PROT_WRITE|PROT_EXEC) 
-!= 0) {
-       perror("Failure to set stack permissions\n");
-       exit(0);
-       }
+      != 0) {
+    perror("Failure to set stack permissions\n");
+    exit(0);
+  }
 
-   new_rsp = (uint64_t)m + NEW_STACK_SIZE - 128;
+  new_rsp = (uint64_t)m + NEW_STACK_SIZE - 128;
 
-   shift_stack_and_invoke_function(new_rsp, test_function);
+  shift_stack_and_invoke_function(new_rsp, test_function);
 
   signal(SIGSEGV, seghandler);
   signal(SIGBUS, bushandler);
@@ -391,49 +390,49 @@ int main(int argc, char *argv[])
 
 
   while ((c = getopt(argc, argv, "gt:u:")) != -1)
-	switch(c) {
-	case 'g': /* Hidden switch */
-	  grade = 1;
-	  quiet = 1;
-	  alarm_time = 1; /* Should get immediate response */
-	  break;
-	  /* 	case 'h': */
-	  /* 	    usage(argv[0]); */
-	  /* 	    break; */
-	  /* 	case 'q': /\* Disabled *\/ */
-	  /* 	    quiet = 1; */
-	  /* 	    break; */
-	  /* 	case 'n': */
-	  /* 	    nitro = 1; */
-	  /* 	    cnt = KABOOM_CNT; */
-	  /* 	    break; */
-	  /* 	case 'x': /\* Disabled *\/ */
-	  /* 	    hexformat = 1; */
-	  /* 	    break; */
-	case 't':
-	case 'u':
-	  team = strdup(optarg);
-	  printf("Username: %s\n", team);
-	  cookie = gencookie(team);
-	  printf("Cookie: 0x%llx\n", cookie);
-	  break;
-	  /* 	case 'f': /\* Disabled *\/ */
-	  /* 	    infile = fopen(optarg, "r"); */
-	  /* 	    if (!infile) { */
-	  /* 		printf("Can't open file: %s\n", optarg); */
-	  /* 		usage(argv[0]); */
-	  /* 	    } */
-	  /* 	    break; */
-	  /* 	case 's': /\* automatically submit solution via email *\/ */
-	  /* 	    submit = 1; */
-	  /* 	    break; */
-	default:
-	  usage(argv[0]);
-	}
+    switch(c) {
+      case 'g': /* Hidden switch */
+        grade = 1;
+        quiet = 1;
+        alarm_time = 1; /* Should get immediate response */
+        break;
+        /* 	case 'h': */
+        /* 	    usage(argv[0]); */
+        /* 	    break; */
+        /* 	case 'q': /\* Disabled *\/ */
+        /* 	    quiet = 1; */
+        /* 	    break; */
+        /* 	case 'n': */
+        /* 	    nitro = 1; */
+        /* 	    cnt = KABOOM_CNT; */
+        /* 	    break; */
+        /* 	case 'x': /\* Disabled *\/ */
+        /* 	    hexformat = 1; */
+        /* 	    break; */
+      case 't':
+      case 'u':
+        team = strdup(optarg);
+        printf("Username: %s\n", team);
+        cookie = gencookie(team);
+        printf("Cookie: 0x%llx\n", cookie);
+        break;
+        /* 	case 'f': /\* Disabled *\/ */
+        /* 	    infile = fopen(optarg, "r"); */
+        /* 	    if (!infile) { */
+        /* 		printf("Can't open file: %s\n", optarg); */
+        /* 		usage(argv[0]); */
+        /* 	    } */
+        /* 	    break; */
+        /* 	case 's': /\* automatically submit solution via email *\/ */
+        /* 	    submit = 1; */
+        /* 	    break; */
+      default:
+        usage(argv[0]);
+    }
 
   if (!team) {
-	printf("You must include a username with -u\n");
-	usage(argv[0]);
+    printf("You must include a username with -u\n");
+    usage(argv[0]);
   }
 
   srandom(cookie);
@@ -442,16 +441,16 @@ int main(int argc, char *argv[])
   /* Set up set of stack offsets */
   offsets = (int *) calloc(cnt, sizeof(int));
   for (i = 0; i < cnt-2; i++)
-	offsets[i] = random() & 0x38;
+    offsets[i] = random() & 0x38;
   if  (cnt >= 2)
-	offsets[cnt-2] = 0x38;
+    offsets[cnt-2] = 0x38;
   offsets[cnt-1] = 0;
 
   /* Set up time out condition */
   alarm(alarm_time);
 
   for (i = 0; i < cnt; i++)
-	launch(nitro, offsets[i]+cookie_tweak);
+    launch(nitro, offsets[i]+cookie_tweak);
 
   return 0;
 }
